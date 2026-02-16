@@ -40,7 +40,7 @@ export default function DashboardPage() {
         <h1 className="text-3xl font-bold tracking-tight">Panel</h1>
         <p className="text-muted-foreground">Tekrar hoş geldin! Bugün olanlar burada.</p>
       </div>
-      
+
       {/* Stats Grid */}
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
         {stats.map((stat) => (
@@ -73,8 +73,8 @@ export default function DashboardPage() {
       <div className="grid gap-4 md:grid-cols-2">
         <Card>
           <CardHeader>
-          <CardTitle>Son Etkinlikler</CardTitle>
-          <CardDescription>Panelindeki en son güncellemeler</CardDescription>
+            <CardTitle>Son Etkinlikler</CardTitle>
+            <CardDescription>Panelindeki en son güncellemeler</CardDescription>
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
@@ -93,8 +93,8 @@ export default function DashboardPage() {
 
         <Card>
           <CardHeader>
-          <CardTitle>Hızlı İşlemler</CardTitle>
-          <CardDescription>Sık kullanılan özellikler</CardDescription>
+            <CardTitle>Hızlı İşlemler</CardTitle>
+            <CardDescription>Sık kullanılan özellikler</CardDescription>
           </CardHeader>
           <CardContent>
             <div className="grid grid-cols-2 gap-2">

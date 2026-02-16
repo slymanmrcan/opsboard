@@ -7,8 +7,7 @@ import type { InviteMemberInput, Preferences, SupportRequestInput } from "@/type
 
 export function useCreateSupportRequest() {
   return useMutation({
-    mutationFn: (data: SupportRequestInput) =>
-      formTemplatesService.createSupportRequest(data),
+    mutationFn: (data: SupportRequestInput) => formTemplatesService.createSupportRequest(data),
     onSuccess: () => {
       toast.success("Talep gönderildi")
     },
@@ -20,8 +19,7 @@ export function useCreateSupportRequest() {
 
 export function useInviteMember() {
   return useMutation({
-    mutationFn: (data: InviteMemberInput) =>
-      formTemplatesService.inviteMember(data),
+    mutationFn: (data: InviteMemberInput) => formTemplatesService.inviteMember(data),
     onSuccess: () => {
       toast.success("Davet gönderildi")
     },
@@ -42,8 +40,7 @@ export function useUpdatePreferences() {
   const queryClient = useQueryClient()
 
   return useMutation({
-    mutationFn: (data: Preferences) =>
-      formTemplatesService.updatePreferences(data),
+    mutationFn: (data: Preferences) => formTemplatesService.updatePreferences(data),
     onSuccess: (response) => {
       queryClient.setQueryData(["preferences"], response)
       toast.success("Tercihler güncellendi")

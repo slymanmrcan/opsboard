@@ -45,12 +45,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip"
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 
 const sampleRows = [
   { id: "USR-1024", name: "Ahmet Yılmaz", status: "Aktif" },
@@ -275,7 +270,9 @@ export default function ComponentsPage() {
             </div>
             <div className="flex gap-2">
               <Button size="sm">Tekrar dene</Button>
-              <Button size="sm" variant="outline">Destek</Button>
+              <Button size="sm" variant="outline">
+                Destek
+              </Button>
             </div>
           </CardContent>
         </Card>
@@ -408,9 +405,7 @@ export default function ComponentsPage() {
                 <DialogClose asChild>
                   <Button variant="outline">Vazgeç</Button>
                 </DialogClose>
-                <Button onClick={() => toast.success("Geniş modal kaydedildi")}>
-                  Kaydet
-                </Button>
+                <Button onClick={() => toast.success("Geniş modal kaydedildi")}>Kaydet</Button>
               </DialogFooter>
             </DialogContent>
           </Dialog>

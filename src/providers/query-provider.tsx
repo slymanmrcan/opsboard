@@ -10,7 +10,7 @@ export function QueryProvider({ children }: { children: React.ReactNode }) {
         defaultOptions: {
           queries: {
             // Verilerin bayatlama süresi (default 0)
-            staleTime: 60 * 1000, 
+            staleTime: 60 * 1000,
             // Pencere odağı kaybedip geri gelince tekrar çekme (default true)
             refetchOnWindowFocus: false,
             // Hata durumunda kaç kere denesin (default 3)
@@ -20,7 +20,5 @@ export function QueryProvider({ children }: { children: React.ReactNode }) {
       })
   )
 
-  return (
-    <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
-  )
+  return <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
 }

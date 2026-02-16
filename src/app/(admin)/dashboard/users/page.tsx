@@ -2,21 +2,15 @@
 
 import { useState } from "react"
 import { useUsers } from "@/hooks/use-users"
-import { 
-  Table, 
-  TableBody, 
-  TableCell, 
-  TableHead, 
-  TableHeader, 
-  TableRow 
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
 } from "@/components/ui/table"
-import { 
-  Card, 
-  CardContent, 
-  CardDescription, 
-  CardHeader, 
-  CardTitle 
-} from "@/components/ui/card"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
@@ -36,10 +30,10 @@ export default function UsersPage() {
   const [page, setPage] = useState(1)
 
   // React Query Hook
-  const { data, isLoading } = useUsers({ 
-    page, 
-    limit: 10, 
-    search 
+  const { data, isLoading } = useUsers({
+    page,
+    limit: 10,
+    search,
   })
 
   const users = data?.data || []
@@ -61,9 +55,7 @@ export default function UsersPage() {
       <Card>
         <CardHeader>
           <CardTitle>Tüm Kullanıcılar</CardTitle>
-          <CardDescription>
-            Ad, e-posta ve rol dahil tüm kullanıcıların listesi.
-          </CardDescription>
+          <CardDescription>Ad, e-posta ve rol dahil tüm kullanıcıların listesi.</CardDescription>
         </CardHeader>
         <CardContent>
           <div className="flex items-center justify-between mb-4 gap-4">
@@ -113,7 +105,10 @@ export default function UsersPage() {
                     <TableRow key={user.id}>
                       <TableCell>
                         <Avatar className="h-8 w-8">
-                          <AvatarImage src={`https://avatar.vercel.sh/${user.email}`} alt={user.name} />
+                          <AvatarImage
+                            src={`https://avatar.vercel.sh/${user.email}`}
+                            alt={user.name}
+                          />
                           <AvatarFallback>{user.name.slice(0, 2).toUpperCase()}</AvatarFallback>
                         </Avatar>
                       </TableCell>
@@ -138,12 +133,16 @@ export default function UsersPage() {
                           </DropdownMenuTrigger>
                           <DropdownMenuContent align="end">
                             <DropdownMenuLabel>İşlemler</DropdownMenuLabel>
-                            <DropdownMenuItem onClick={() => navigator.clipboard.writeText(user.id)}>
+                            <DropdownMenuItem
+                              onClick={() => navigator.clipboard.writeText(user.id)}
+                            >
                               ID kopyala
                             </DropdownMenuItem>
                             <DropdownMenuSeparator />
                             <DropdownMenuItem>Detayları görüntüle</DropdownMenuItem>
-                            <DropdownMenuItem className="text-destructive">Kullanıcıyı sil</DropdownMenuItem>
+                            <DropdownMenuItem className="text-destructive">
+                              Kullanıcıyı sil
+                            </DropdownMenuItem>
                           </DropdownMenuContent>
                         </DropdownMenu>
                       </TableCell>

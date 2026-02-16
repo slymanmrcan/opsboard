@@ -28,11 +28,11 @@ export const useAuthStore = create<AuthState>()(
         set({ isLoading: true })
         try {
           const response = await authService.login(credentials)
-          set({ 
-            user: response.user, 
-            token: response.token, 
-            isAuthenticated: true, 
-            isLoading: false 
+          set({
+            user: response.user,
+            token: response.token,
+            isAuthenticated: true,
+            isLoading: false,
           })
         } catch (error) {
           set({ isLoading: false })
@@ -47,10 +47,10 @@ export const useAuthStore = create<AuthState>()(
     }),
     {
       name: "auth-storage", // local storage key
-      partialize: (state) => ({ 
-        user: state.user, 
-        token: state.token, 
-        isAuthenticated: state.isAuthenticated 
+      partialize: (state) => ({
+        user: state.user,
+        token: state.token,
+        isAuthenticated: state.isAuthenticated,
       }),
     }
   )

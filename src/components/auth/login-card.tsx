@@ -57,15 +57,8 @@ function LoginForm() {
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
       <div className="space-y-2">
         <Label htmlFor="email">E-posta</Label>
-        <Input 
-          id="email" 
-          type="email" 
-          placeholder="name@example.com" 
-          {...register("email")}
-        />
-        {errors.email && (
-          <p className="text-sm text-destructive">{errors.email.message}</p>
-        )}
+        <Input id="email" type="email" placeholder="name@example.com" {...register("email")} />
+        {errors.email && <p className="text-sm text-destructive">{errors.email.message}</p>}
       </div>
       <div className="space-y-2">
         <div className="flex items-center justify-between">
@@ -77,14 +70,8 @@ function LoginForm() {
             Şifremi unuttum
           </Link>
         </div>
-        <Input 
-          id="password" 
-          type="password" 
-          {...register("password")}
-        />
-        {errors.password && (
-          <p className="text-sm text-destructive">{errors.password.message}</p>
-        )}
+        <Input id="password" type="password" {...register("password")} />
+        {errors.password && <p className="text-sm text-destructive">{errors.password.message}</p>}
       </div>
       <Button type="submit" className="w-full" size="lg" disabled={isLoading}>
         {isLoading ? "Giriş yapılıyor..." : "Giriş yap"}

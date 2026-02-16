@@ -23,13 +23,9 @@ export function Notifications() {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button 
-          variant="ghost" 
-          size="icon" 
-          className="relative h-9 w-9 hover:bg-accent"
-        >
+        <Button variant="ghost" size="icon" className="relative h-9 w-9 hover:bg-accent">
           <Bell className="h-5 w-5" />
-          <Badge 
+          <Badge
             className="absolute -top-1 -right-1 h-5 w-5 flex items-center justify-center p-0 text-[10px]"
             variant="destructive"
           >
@@ -38,13 +34,14 @@ export function Notifications() {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-80">
-        <DropdownMenuLabel className="font-semibold">
-          Bildirimler
-        </DropdownMenuLabel>
+        <DropdownMenuLabel className="font-semibold">Bildirimler</DropdownMenuLabel>
         <DropdownMenuSeparator />
         <div className="max-h-[300px] overflow-y-auto">
           {notifications.map((notification) => (
-            <DropdownMenuItem key={notification.id} className="flex flex-col items-start gap-1 p-3 cursor-pointer">
+            <DropdownMenuItem
+              key={notification.id}
+              className="flex flex-col items-start gap-1 p-3 cursor-pointer"
+            >
               <span className="font-medium text-sm">{notification.title}</span>
               <span className="text-xs text-muted-foreground">{notification.time}</span>
             </DropdownMenuItem>

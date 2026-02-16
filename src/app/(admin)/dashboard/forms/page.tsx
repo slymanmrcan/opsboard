@@ -7,9 +7,23 @@ import * as z from "zod"
 
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
+import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
 import { Switch } from "@/components/ui/switch"
 import { Separator } from "@/components/ui/separator"
 import { cn } from "@/lib/utils"
@@ -256,7 +270,10 @@ export default function FormsPage() {
         </CardHeader>
         <CardContent>
           <Form {...preferencesForm}>
-            <form onSubmit={preferencesForm.handleSubmit(onSubmitPreferences)} className="space-y-4">
+            <form
+              onSubmit={preferencesForm.handleSubmit(onSubmitPreferences)}
+              className="space-y-4"
+            >
               <div className="grid gap-4 md:grid-cols-2">
                 <FormField
                   control={preferencesForm.control}

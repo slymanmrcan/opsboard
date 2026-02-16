@@ -23,7 +23,7 @@ export const authService = {
     // MOCK LOGIN IMPLEMENTATION
     if (process.env.NEXT_PUBLIC_MOCK_AUTH === "true") {
       await new Promise((resolve) => setTimeout(resolve, 1000)) // Fake delay
-      
+
       const mockUser: User = {
         id: "1",
         name: "Demo User",
@@ -32,12 +32,12 @@ export const authService = {
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
       }
-      
+
       const mockToken = "mock-jwt-token-12345"
-      
+
       // Cookie'ye token yaz (Middleware için gerekli)
       document.cookie = `token=${mockToken}; path=/; max-age=86400`
-      
+
       return { user: mockUser, token: mockToken }
     }
 
@@ -45,7 +45,7 @@ export const authService = {
     const response = await api.post<ApiResponse<AuthResponse>>("/auth/login", credentials, {
       noAuth: true,
     })
-    
+
     return response.data
   },
 
@@ -72,8 +72,8 @@ export const authService = {
 
   getCurrentUser: async () => {
     if (process.env.NEXT_PUBLIC_MOCK_AUTH === "true") {
-       // Mock user dön
-       const mockUser: User = {
+      // Mock user dön
+      const mockUser: User = {
         id: "1",
         name: "Demo User",
         email: "demo@example.com",
@@ -90,5 +90,5 @@ export const authService = {
 
   refreshToken: async () => {
     // Refresh token implementasyonu buraya
-  }
+  },
 }

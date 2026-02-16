@@ -1,12 +1,7 @@
 "use client"
 
 import { api } from "@/services"
-import type {
-  ApiResponse,
-  InviteMemberInput,
-  Preferences,
-  SupportRequestInput,
-} from "@/types"
+import type { ApiResponse, InviteMemberInput, Preferences, SupportRequestInput } from "@/types"
 
 type SupportRequestResult = {
   id: string

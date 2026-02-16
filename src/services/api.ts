@@ -24,7 +24,7 @@ async function request<T>(
   options: RequestInit & RequestOptions = {}
 ): Promise<T> {
   const { headers: customHeaders, noAuth, ...restOptions } = options
-  
+
   const headers: Record<string, string> = {
     "Content-Type": "application/json",
   }
@@ -62,7 +62,7 @@ async function request<T>(
       // Try to parse error message from response
       let errorMessage = `API Error: ${res.status}`
       let errorData = null
-      
+
       try {
         const errorBody = await res.json()
         errorMessage = errorBody.message || errorBody.error || errorMessage

@@ -23,17 +23,19 @@ const profileSchema = z.object({
   email: z.string().email("Geçersiz e-posta adresi"),
 })
 
-const passwordSchema = z.object({
-  currentPassword: z.string().min(6, "En az 6 karakter olmalı"),
-  newPassword: z.string().min(6, "En az 6 karakter olmalı"),
-  confirmPassword: z.string().min(6, "En az 6 karakter olmalı"),
-}).refine((data) => data.newPassword === data.confirmPassword, {
-  message: "Şifreler eşleşmiyor",
-  path: ["confirmPassword"],
-})
+const passwordSchema = z
+  .object({
+    currentPassword: z.string().min(6, "En az 6 karakter olmalı"),
+    newPassword: z.string().min(6, "En az 6 karakter olmalı"),
+    confirmPassword: z.string().min(6, "En az 6 karakter olmalı"),
+  })
+  .refine((data) => data.newPassword === data.confirmPassword, {
+    message: "Şifreler eşleşmiyor",
+    path: ["confirmPassword"],
+  })
 
 export default function ProfilePage() {
-  const { user} = useAuthStore()
+  const { user } = useAuthStore()
   const { setTheme, theme } = useTheme()
   const [isLoading, setIsLoading] = useState(false)
 
@@ -55,12 +57,12 @@ export default function ProfilePage() {
     setIsLoading(true)
     // Mock API update
     await new Promise((resolve) => setTimeout(resolve, 800))
-    
+
     // Auth Store güncelle
     if (user) {
-        useAuthStore.getState().updateUser({ ...user, ...values })
+      useAuthStore.getState().updateUser({ ...user, ...values })
     }
-    
+
     setIsLoading(false)
     toast.success("Profil başarıyla güncellendi")
   }
@@ -77,19 +79,17 @@ export default function ProfilePage() {
     <div className="space-y-6">
       <div className="space-y-0.5">
         <h2 className="text-2xl font-bold tracking-tight">Ayarlar</h2>
-        <p className="text-muted-foreground">
-          Hesap ayarlarını ve tercihlerini yönet.
-        </p>
+        <p className="text-muted-foreground">Hesap ayarlarını ve tercihlerini yönet.</p>
       </div>
       <Separator className="my-6" />
-      
+
       <div className="flex flex-col space-y-8 lg:flex-row lg:space-x-12 lg:space-y-0">
         <aside className="-mx-4 lg:w-1/5">
           <nav className="flex space-x-2 lg:flex-col lg:space-x-0 lg:space-y-1 px-4">
-             {/* Buraya yan menü linkleri gelebilir, şimdilik Tabs kullanıyoruz */}
+            {/* Buraya yan menü linkleri gelebilir, şimdilik Tabs kullanıyoruz */}
           </nav>
         </aside>
-        
+
         <div className="flex-1 lg:max-w-2xl">
           <Tabs defaultValue="general" className="space-y-4">
             <TabsList>
@@ -104,36 +104,38 @@ export default function ProfilePage() {
               <Card>
                 <CardHeader>
                   <CardTitle>Profil</CardTitle>
-                  <CardDescription>
-                    Kişisel bilgilerini güncelle.
-                  </CardDescription>
+                  <CardDescription>Kişisel bilgilerini güncelle.</CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-6">
-                    <div className="flex items-center gap-4">
-                        <Avatar className="h-16 w-16">
-                            <AvatarImage src={`https://avatar.vercel.sh/${user?.email}`} />
-                            <AvatarFallback>Kullanıcı</AvatarFallback>
-                        </Avatar>
-                        <Button variant="outline">Avatarı değiştir</Button>
-                    </div>
-                
+                  <div className="flex items-center gap-4">
+                    <Avatar className="h-16 w-16">
+                      <AvatarImage src={`https://avatar.vercel.sh/${user?.email}`} />
+                      <AvatarFallback>Kullanıcı</AvatarFallback>
+                    </Avatar>
+                    <Button variant="outline">Avatarı değiştir</Button>
+                  </div>
+
                   <form onSubmit={profileForm.handleSubmit(onProfileSubmit)} className="space-y-4">
                     <div className="space-y-2">
-                        <Label htmlFor="name">Görünen Ad</Label>
-                        <Input id="name" {...profileForm.register("name")} />
-                        {profileForm.formState.errors.name && (
-                            <p className="text-sm text-destructive">{profileForm.formState.errors.name.message}</p>
-                        )}
+                      <Label htmlFor="name">Görünen Ad</Label>
+                      <Input id="name" {...profileForm.register("name")} />
+                      {profileForm.formState.errors.name && (
+                        <p className="text-sm text-destructive">
+                          {profileForm.formState.errors.name.message}
+                        </p>
+                      )}
                     </div>
                     <div className="space-y-2">
-                        <Label htmlFor="email">E-posta</Label>
-                        <Input id="email" {...profileForm.register("email")} />
-                        {profileForm.formState.errors.email && (
-                            <p className="text-sm text-destructive">{profileForm.formState.errors.email.message}</p>
-                        )}
+                      <Label htmlFor="email">E-posta</Label>
+                      <Input id="email" {...profileForm.register("email")} />
+                      {profileForm.formState.errors.email && (
+                        <p className="text-sm text-destructive">
+                          {profileForm.formState.errors.email.message}
+                        </p>
+                      )}
                     </div>
                     <Button type="submit" disabled={isLoading}>
-                        {isLoading ? "Kaydediliyor..." : "Değişiklikleri kaydet"}
+                      {isLoading ? "Kaydediliyor..." : "Değişiklikleri kaydet"}
                     </Button>
                   </form>
                 </CardContent>
@@ -142,109 +144,129 @@ export default function ProfilePage() {
 
             {/* Security Tab */}
             <TabsContent value="security" className="space-y-4">
-               <Card>
+              <Card>
                 <CardHeader>
                   <CardTitle>Şifre</CardTitle>
-                  <CardDescription>
-                    Şifreni değiştir.
-                  </CardDescription>
+                  <CardDescription>Şifreni değiştir.</CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <form onSubmit={passwordForm.handleSubmit(onPasswordSubmit)} className="space-y-4">
+                  <form
+                    onSubmit={passwordForm.handleSubmit(onPasswordSubmit)}
+                    className="space-y-4"
+                  >
                     <div className="space-y-2">
-                        <Label htmlFor="currentPassword">Mevcut Şifre</Label>
-                        <Input id="currentPassword" type="password" {...passwordForm.register("currentPassword")} />
-                         {passwordForm.formState.errors.currentPassword && (
-                            <p className="text-sm text-destructive">{passwordForm.formState.errors.currentPassword.message}</p>
-                        )}
+                      <Label htmlFor="currentPassword">Mevcut Şifre</Label>
+                      <Input
+                        id="currentPassword"
+                        type="password"
+                        {...passwordForm.register("currentPassword")}
+                      />
+                      {passwordForm.formState.errors.currentPassword && (
+                        <p className="text-sm text-destructive">
+                          {passwordForm.formState.errors.currentPassword.message}
+                        </p>
+                      )}
                     </div>
                     <div className="space-y-2">
-                        <Label htmlFor="newPassword">Yeni Şifre</Label>
-                        <Input id="newPassword" type="password" {...passwordForm.register("newPassword")} />
-                         {passwordForm.formState.errors.newPassword && (
-                            <p className="text-sm text-destructive">{passwordForm.formState.errors.newPassword.message}</p>
-                        )}
+                      <Label htmlFor="newPassword">Yeni Şifre</Label>
+                      <Input
+                        id="newPassword"
+                        type="password"
+                        {...passwordForm.register("newPassword")}
+                      />
+                      {passwordForm.formState.errors.newPassword && (
+                        <p className="text-sm text-destructive">
+                          {passwordForm.formState.errors.newPassword.message}
+                        </p>
+                      )}
                     </div>
                     <div className="space-y-2">
-                        <Label htmlFor="confirmPassword">Şifreyi Doğrula</Label>
-                        <Input id="confirmPassword" type="password" {...passwordForm.register("confirmPassword")} />
-                         {passwordForm.formState.errors.confirmPassword && (
-                            <p className="text-sm text-destructive">{passwordForm.formState.errors.confirmPassword.message}</p>
-                        )}
+                      <Label htmlFor="confirmPassword">Şifreyi Doğrula</Label>
+                      <Input
+                        id="confirmPassword"
+                        type="password"
+                        {...passwordForm.register("confirmPassword")}
+                      />
+                      {passwordForm.formState.errors.confirmPassword && (
+                        <p className="text-sm text-destructive">
+                          {passwordForm.formState.errors.confirmPassword.message}
+                        </p>
+                      )}
                     </div>
-                    <Button type="submit" disabled={isLoading}>Şifreyi değiştir</Button>
+                    <Button type="submit" disabled={isLoading}>
+                      Şifreyi değiştir
+                    </Button>
                   </form>
                 </CardContent>
               </Card>
-              
+
               <Card>
-                  <CardHeader>
-                      <CardTitle>İki Aşamalı Doğrulama</CardTitle>
-                      <CardDescription>Hesabına ek bir güvenlik katmanı ekle.</CardDescription>
-                  </CardHeader>
-                  <CardContent className="flex items-center justify-between">
-                      <div className="space-y-0.5">
-                          <Label className="text-base">2FA&apos;yı etkinleştir</Label>
-                          <p className="text-sm text-muted-foreground">Hesabını TOTP ile koru.</p>
-                      </div>
-                      <Switch />
-                  </CardContent>
+                <CardHeader>
+                  <CardTitle>İki Aşamalı Doğrulama</CardTitle>
+                  <CardDescription>Hesabına ek bir güvenlik katmanı ekle.</CardDescription>
+                </CardHeader>
+                <CardContent className="flex items-center justify-between">
+                  <div className="space-y-0.5">
+                    <Label className="text-base">2FA&apos;yı etkinleştir</Label>
+                    <p className="text-sm text-muted-foreground">Hesabını TOTP ile koru.</p>
+                  </div>
+                  <Switch />
+                </CardContent>
               </Card>
             </TabsContent>
 
             {/* Appearance Tab */}
-             <TabsContent value="appearance" className="space-y-4">
-               <Card>
+            <TabsContent value="appearance" className="space-y-4">
+              <Card>
                 <CardHeader>
                   <CardTitle>Tema</CardTitle>
-                  <CardDescription>
-                    Uygulamanın görünümünü özelleştir.
-                  </CardDescription>
+                  <CardDescription>Uygulamanın görünümünü özelleştir.</CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
-                    <div className="flex items-center justify-between p-4 border rounded-lg">
-                        <div className="space-y-0.5">
-                            <Label className="text-base">Koyu Mod</Label>
-                            <p className="text-sm text-muted-foreground">Koyu modu aç veya kapat.</p>
-                        </div>
-                        <Switch 
-                            checked={theme === 'dark'} 
-                            onCheckedChange={(checked) => setTheme(checked ? 'dark' : 'light')} 
-                        />
+                  <div className="flex items-center justify-between p-4 border rounded-lg">
+                    <div className="space-y-0.5">
+                      <Label className="text-base">Koyu Mod</Label>
+                      <p className="text-sm text-muted-foreground">Koyu modu aç veya kapat.</p>
                     </div>
+                    <Switch
+                      checked={theme === "dark"}
+                      onCheckedChange={(checked) => setTheme(checked ? "dark" : "light")}
+                    />
+                  </div>
                 </CardContent>
               </Card>
             </TabsContent>
 
             {/* Notifications Tab */}
-             <TabsContent value="notifications" className="space-y-4">
-               <Card>
+            <TabsContent value="notifications" className="space-y-4">
+              <Card>
                 <CardHeader>
                   <CardTitle>E-posta Bildirimleri</CardTitle>
-                  <CardDescription>
-                    E-posta tercihlerini yönet.
-                  </CardDescription>
+                  <CardDescription>E-posta tercihlerini yönet.</CardDescription>
                 </CardHeader>
-                 <CardContent className="space-y-4">
-                    <div className="flex items-center justify-between">
-                        <div className="space-y-0.5">
-                            <Label className="text-base">İletişim E-postaları</Label>
-                            <p className="text-sm text-muted-foreground">Hesap etkinliği hakkında e-posta al.</p>
-                        </div>
-                        <Switch defaultChecked />
+                <CardContent className="space-y-4">
+                  <div className="flex items-center justify-between">
+                    <div className="space-y-0.5">
+                      <Label className="text-base">İletişim E-postaları</Label>
+                      <p className="text-sm text-muted-foreground">
+                        Hesap etkinliği hakkında e-posta al.
+                      </p>
                     </div>
-                    <Separator />
-                     <div className="flex items-center justify-between">
-                        <div className="space-y-0.5">
-                            <Label className="text-base">Pazarlama E-postaları</Label>
-                            <p className="text-sm text-muted-foreground">Yeni ürün ve özellikler hakkında e-posta al.</p>
-                        </div>
-                        <Switch />
+                    <Switch defaultChecked />
+                  </div>
+                  <Separator />
+                  <div className="flex items-center justify-between">
+                    <div className="space-y-0.5">
+                      <Label className="text-base">Pazarlama E-postaları</Label>
+                      <p className="text-sm text-muted-foreground">
+                        Yeni ürün ve özellikler hakkında e-posta al.
+                      </p>
                     </div>
+                    <Switch />
+                  </div>
                 </CardContent>
               </Card>
             </TabsContent>
-            
           </Tabs>
         </div>
       </div>

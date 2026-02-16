@@ -28,23 +28,23 @@ export const userService = {
       await new Promise((resolve) => setTimeout(resolve, 800)) // Fake delay
 
       const { page = 1, limit = 10, search = "" } = params
-      
+
       let filteredUsers = [...MOCK_USERS]
-      
+
       if (search) {
         const lowerSearch = search.toLowerCase()
         filteredUsers = filteredUsers.filter(
-          (user) => 
-            user.name.toLowerCase().includes(lowerSearch) || 
+          (user) =>
+            user.name.toLowerCase().includes(lowerSearch) ||
             user.email.toLowerCase().includes(lowerSearch)
         )
       }
-      
+
       const total = filteredUsers.length
       const start = (page - 1) * limit
       const end = start + limit
       const paginatedUsers = filteredUsers.slice(start, end)
-      
+
       return {
         success: true,
         message: "Users fetched successfully",
@@ -54,7 +54,7 @@ export const userService = {
           page,
           limit,
           totalPages: Math.ceil(total / limit),
-        }
+        },
       } as PaginatedResponse<User>
     }
 
@@ -66,12 +66,12 @@ export const userService = {
 
     return api.get<PaginatedResponse<User>>(`/users?${queryParams.toString()}`)
   },
-  
+
   getUser: async (id: string) => {
     if (process.env.NEXT_PUBLIC_MOCK_AUTH === "true") {
       await new Promise((resolve) => setTimeout(resolve, 500))
-      return MOCK_USERS.find(u => u.id === id) || null
+      return MOCK_USERS.find((u) => u.id === id) || null
     }
     return api.get<User>(`/users/${id}`)
-  }
+  },
 }

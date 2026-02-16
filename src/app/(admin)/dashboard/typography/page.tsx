@@ -7,7 +7,11 @@ const typeScale = [
   { label: "H3 / xl", className: "text-xl font-semibold", text: "Alt Başlık" },
   { label: "Body / base", className: "text-base", text: "Bu bir normal paragraf örneğidir." },
   { label: "Small / sm", className: "text-sm", text: "İkincil açıklama metni." },
-  { label: "Muted / sm", className: "text-sm text-muted-foreground", text: "İkincil ve düşük öncelikli metin." },
+  {
+    label: "Muted / sm",
+    className: "text-sm text-muted-foreground",
+    text: "İkincil ve düşük öncelikli metin.",
+  },
 ]
 
 const colorTokens = [

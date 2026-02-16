@@ -33,7 +33,10 @@ const gridExamples = [
 ]
 
 const breakpointExamples = [
-  { label: "Mobil → Tablet → Desktop", className: "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4" },
+  {
+    label: "Mobil → Tablet → Desktop",
+    className: "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4",
+  },
   { label: "Sidebar + Content", className: "grid grid-cols-1 lg:grid-cols-[240px_1fr] gap-4" },
 ]
 
@@ -114,9 +117,11 @@ export default function LayoutPage() {
               <div key={item.label} className="space-y-2">
                 <div className="text-sm text-muted-foreground">{item.label}</div>
                 <div className={item.className}>
-                  {[...Array(item.label.includes("4") ? 4 : item.label.includes("3") ? 3 : 2)].map((_, index) => (
-                    <div key={index} className="h-10 rounded-md bg-muted/40" />
-                  ))}
+                  {[...Array(item.label.includes("4") ? 4 : item.label.includes("3") ? 3 : 2)].map(
+                    (_, index) => (
+                      <div key={index} className="h-10 rounded-md bg-muted/40" />
+                    )
+                  )}
                 </div>
               </div>
             ))}

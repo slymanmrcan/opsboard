@@ -52,9 +52,7 @@ export const navConfig: NavGroup[] = [
   },
   {
     label: "Sistem",
-    items: [
-      { title: "Ayarlar", icon: Settings, url: "/dashboard/settings" },
-    ],
+    items: [{ title: "Ayarlar", icon: Settings, url: "/dashboard/settings" }],
   },
   {
     label: "Kimlik Doğrulama",
