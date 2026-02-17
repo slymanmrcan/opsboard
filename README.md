@@ -1,6 +1,7 @@
 # Opsboard
 
 Next.js App Router tabanlı, React Query + Zustand + Shadcn/UI altyapısı ile operasyon yönetimi odaklı admin panel.
+docker ile kurulum ve çalıştırma kolaylığı sağlar.
 
 ## Hızlı Başlangıç
 
