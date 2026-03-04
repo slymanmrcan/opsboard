@@ -5,6 +5,7 @@ import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
 import {
   Table,
   TableBody,
@@ -22,8 +23,28 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog"
+import { toast } from "sonner"
 
-const products = [
+type ProductStatus = "Aktif" | "Düşük Stok" | "Tükendi"
+
+type Product = {
+  id: string
+  name: string
+  category: string
+  price: string
+  stock: number
+  status: ProductStatus
+}
+
+const products: Product[] = [
   {
     id: "PRD-1001",
     name: "Smart Dashboard",
@@ -58,16 +79,95 @@ const products = [
   },
 ]
 
+function getStatusFromStock(stock: number): ProductStatus {
+  if (stock <= 0) {
+    return "Tükendi"
+  }
+  if (stock <= 10) {
+    return "Düşük Stok"
+  }
+  return "Aktif"
+}
+
+function formatPrice(value: number): string {
+  return new Intl.NumberFormat("tr-TR", {
+    style: "currency",
+    currency: "TRY",
+    maximumFractionDigits: 2,
+  }).format(value)
+}
+
 export default function ProductsPage() {
   const [search, setSearch] = useState("")
+  const [isCreateOpen, setIsCreateOpen] = useState(false)
+  const [customProducts, setCustomProducts] = useState<Product[]>([])
+  const [formName, setFormName] = useState("")
+  const [formCategory, setFormCategory] = useState("")
+  const [formPrice, setFormPrice] = useState("")
+  const [formStock, setFormStock] = useState("")
+
+  const allProducts = useMemo(() => {
+    const customProductIds = new Set(customProducts.map((product) => product.id))
+    const filteredDefaultProducts = products.filter((product) => !customProductIds.has(product.id))
+    return [...customProducts, ...filteredDefaultProducts]
+  }, [customProducts])
 
   const filteredProducts = useMemo(() => {
     if (!search.trim()) {
-      return products
+      return allProducts
     }
 
-    return products.filter((product) => product.name.toLowerCase().includes(search.toLowerCase()))
-  }, [search])
+    return allProducts.filter((product) =>
+      product.name.toLowerCase().includes(search.toLowerCase())
+    )
+  }, [allProducts, search])
+
+  const handleAddProduct = () => {
+    const name = formName.trim()
+    const category = formCategory.trim()
+    const priceNumber = Number(formPrice)
+    const stockNumber = Number(formStock)
+
+    if (!name) {
+      toast.error("Ürün adı zorunlu.")
+      return
+    }
+
+    if (!category) {
+      toast.error("Kategori zorunlu.")
+      return
+    }
+
+    if (!Number.isFinite(priceNumber) || priceNumber <= 0) {
+      toast.error("Geçerli bir fiyat gir.")
+      return
+    }
+
+    if (!Number.isInteger(stockNumber) || stockNumber < 0) {
+      toast.error("Stok 0 veya pozitif tam sayı olmalı.")
+      return
+    }
+
+    const newProduct: Product = {
+      id: `PRD-${Date.now()}`,
+      name,
+      category,
+      price: formatPrice(priceNumber),
+      stock: stockNumber,
+      status: getStatusFromStock(stockNumber),
+    }
+
+    const nextProducts = [newProduct, ...customProducts]
+    setCustomProducts(nextProducts)
+
+    setFormName("")
+    setFormCategory("")
+    setFormPrice("")
+    setFormStock("")
+    setIsCreateOpen(false)
+
+    toast.success("Ürün eklendi.")
+  }
 
   return (
     <div className="space-y-6">
@@ -76,7 +176,7 @@ export default function ProductsPage() {
           <h1 className="text-3xl font-bold tracking-tight">Ürünler</h1>
           <p className="text-muted-foreground">Katalog, stok ve satış performansı.</p>
         </div>
-        <Button className="gap-2">
+        <Button className="gap-2" onClick={() => setIsCreateOpen(true)}>
           <Plus className="h-4 w-4" />
           Yeni ürün
         </Button>
@@ -166,6 +266,72 @@ export default function ProductsPage() {
           </div>
         </CardContent>
       </Card>
+
+      <Dialog open={isCreateOpen} onOpenChange={setIsCreateOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Yeni Ürün</DialogTitle>
+            <DialogDescription>Ürün tablosuna hızlıca yeni bir kayıt ekle.</DialogDescription>
+          </DialogHeader>
+
+          <div className="space-y-4">
+            <div className="space-y-2">
+              <Label htmlFor="new-product-name">Ürün adı</Label>
+              <Input
+                id="new-product-name"
+                placeholder="Örn: Opsboard CRM"
+                value={formName}
+                onChange={(event) => setFormName(event.target.value)}
+              />
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="new-product-category">Kategori</Label>
+              <Input
+                id="new-product-category"
+                placeholder="Örn: Operasyon"
+                value={formCategory}
+                onChange={(event) => setFormCategory(event.target.value)}
+              />
+            </div>
+
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+              <div className="space-y-2">
+                <Label htmlFor="new-product-price">Fiyat (TRY)</Label>
+                <Input
+                  id="new-product-price"
+                  type="number"
+                  min="0"
+                  step="0.01"
+                  placeholder="1250"
+                  value={formPrice}
+                  onChange={(event) => setFormPrice(event.target.value)}
+                />
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="new-product-stock">Stok</Label>
+                <Input
+                  id="new-product-stock"
+                  type="number"
+                  min="0"
+                  step="1"
+                  placeholder="25"
+                  value={formStock}
+                  onChange={(event) => setFormStock(event.target.value)}
+                />
+              </div>
+            </div>
+          </div>
+
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setIsCreateOpen(false)}>
+              İptal
+            </Button>
+            <Button onClick={handleAddProduct}>Ürünü ekle</Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   )
 }

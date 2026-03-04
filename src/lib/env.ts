@@ -5,11 +5,11 @@ const envSchema = z.object({
   NEXT_PUBLIC_API_URL: z.string().url().optional(),
   NEXT_PUBLIC_MOCK_AUTH: z
     .enum(["true", "false"])
-    .default("false")
+    .default("true")
     .transform((val) => val === "true"),
   NEXT_PUBLIC_DISABLE_MIDDLEWARE: z
     .enum(["true", "false"])
-    .default("false")
+    .default("true")
     .transform((val) => val === "true"),
 })
 
