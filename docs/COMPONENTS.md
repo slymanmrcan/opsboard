@@ -85,7 +85,6 @@ Otomatik breadcrumb navigation component'i. URL'den otomatik oluşturur.
 
 ```tsx
 import { Breadcrumb } from "@/components/breadcrumb"
-
 ;<Breadcrumb />
 ```
 
@@ -105,7 +104,6 @@ Server-side pagination için component.
 
 ```tsx
 import { Pagination } from "@/components/pagination"
-
 ;<Pagination
   currentPage={page}
   totalPages={totalPages}
@@ -126,7 +124,6 @@ Dashboard istatistik kartları için component.
 ```tsx
 import { StatsCard } from "@/components/stats-card"
 import { Users } from "lucide-react"
-
 ;<StatsCard
   title="Toplam Kullanıcı"
   value="2,350"
@@ -147,7 +144,6 @@ Boş liste/tablo durumları için component.
 ```tsx
 import { EmptyState } from "@/components/empty-state"
 import { Users } from "lucide-react"
-
 ;<EmptyState
   icon={Users}
   title="Henüz kullanıcı yok"
@@ -218,7 +214,6 @@ Paylaşılabilir error/loading/404 UI component'leri.
 
 ```tsx
 import { NotFoundContent } from "@/components/error-states"
-
 ;<NotFoundContent
   title="Ürün Bulunamadı"
   description="Bu ürün artık mevcut değil"
@@ -231,7 +226,6 @@ import { NotFoundContent } from "@/components/error-states"
 
 ```tsx
 import { ErrorContent } from "@/components/error-states"
-
 ;<ErrorContent
   title="Kayıt Başarısız"
   message="Lütfen bilgilerinizi kontrol edin"
@@ -244,7 +238,6 @@ import { ErrorContent } from "@/components/error-states"
 
 ```tsx
 import { LoadingContent } from "@/components/error-states"
-
 ;<LoadingContent message="Veriler yükleniyor..." />
 ```
 
