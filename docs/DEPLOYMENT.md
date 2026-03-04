@@ -1,89 +1,44 @@
-# Deployment (GitHub Actions + GHCR + VPS)
+# Deployment (GitHub Actions + Vercel)
 
-Bu proje GitHub Pages'e uygun değildir (Next.js server runtime, proxy ve auth akışı var).  
-Bu nedenle deployment modeli: **GitHub Actions -> GHCR image -> VPS üzerinde Docker run**.
+Bu proje için Docker kullanmadan deploy modeli:
+**GitHub Actions -> Vercel**.
 
-## 1. Server Hazırlığı
+## 1. Vercel Proje Bağlantısı
 
-Sunucuda şu araçlar kurulu olmalı:
+1. Repo'yu Vercel'e import et.
+2. Vercel Project Settings içinde gerekli environment variable'ları tanımla.
+3. Vercel üzerinden aşağıdaki değerleri al:
+   - `VERCEL_ORG_ID`
+   - `VERCEL_PROJECT_ID`
 
-1. Docker
-2. Docker daemon erişimi olan bir kullanıcı
-3. SSH ile erişim
+## 2. GitHub Secrets
 
-Opsiyonel önerilen klasör yapısı:
+Repo -> `Settings` -> `Secrets and variables` -> `Actions` içine ekle:
 
-```bash
-sudo mkdir -p /opt/opsboard
-sudo chown -R $USER:$USER /opt/opsboard
-```
+1. `VERCEL_TOKEN`
+2. `VERCEL_ORG_ID`
+3. `VERCEL_PROJECT_ID`
 
-## 2. Env Dosyası (Server)
+## 3. Workflow
 
-Sunucuda bir env dosyası oluştur:
-
-`/opt/opsboard/.env`
-
-Örnek:
-
-```bash
-NODE_ENV=production
-NEXT_PUBLIC_APP_URL=https://senin-domainin.com
-NEXT_PUBLIC_API_URL=https://api.senin-domainin.com
-NEXT_PUBLIC_MOCK_AUTH=false
-NEXT_PUBLIC_DISABLE_MIDDLEWARE=false
-```
-
-## 3. GitHub Secrets
-
-Repo -> `Settings` -> `Secrets and variables` -> `Actions` kısmında aşağıdakileri ekle:
-
-Zorunlu:
-
-1. `DEPLOY_SSH_HOST` - Sunucu IP veya domain
-2. `DEPLOY_SSH_USER` - SSH kullanıcı adı
-3. `DEPLOY_SSH_KEY` - Private key (PEM/OpenSSH)
-4. `GHCR_USERNAME` - GHCR kullanıcı adı
-5. `GHCR_READ_TOKEN` - `read:packages` yetkili token
-
-Opsiyonel:
-
-1. `DEPLOY_SSH_PORT` - Varsayılan `22`
-2. `DEPLOY_CONTAINER_NAME` - Varsayılan `opsboard`
-3. `DEPLOY_HOST_PORT` - Varsayılan `4008`
-4. `DEPLOY_ENV_FILE` - Varsayılan `/opt/opsboard/.env`
-
-## 4. Workflow Akışı
-
-Yeni workflow dosyası:
+Workflow dosyası:
 
 `/.github/workflows/deploy.yml`
 
 Tetiklenme:
 
-1. `Container Publish` başarılı bitince otomatik (main/master)
+1. `main/master` branch'ine push
 2. Manuel tetikleme (`workflow_dispatch`)
 
-Yaptığı işlem:
+Akış:
 
-1. GHCR'dan `ghcr.io/<owner>/<repo>:latest` image çeker
-2. Mevcut container varsa siler
-3. Yeni container'ı `--env-file` ile ayağa kaldırır
+1. `npm ci`
+2. `npm run build`
+3. `vercel pull`
+4. `vercel build --prod`
+5. `vercel deploy --prebuilt --prod`
 
-## 5. İlk Canlı Alma
+## 4. Önemli Not
 
-1. `main` branch'ine push yap
-2. `Container Publish` workflow'unu kontrol et
-3. Ardından `Deploy` workflow'un başarılı bittiğini doğrula
-4. Sunucuda:
-
-```bash
-docker ps
-docker logs -f opsboard
-```
-
-## 6. Notlar
-
-1. Eğer reverse proxy (Nginx/Caddy/Traefik) kullanıyorsan app'i `DEPLOY_HOST_PORT` üzerinden proxy et.
-2. TLS/HTTPS termination reverse proxy tarafında yapılmalı.
-3. `latest` yerine immutable tag ile deploy etmek istersen workflow tag stratejisi genişletilebilir.
+GitHub Actions bir hosting ortamı değildir; kalıcı olarak uygulamayı ayakta tutmaz.  
+Actions burada sadece build/deploy orchestrator olarak çalışır, app Vercel'de host edilir.
