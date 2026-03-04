@@ -4,6 +4,12 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { ArrowLeft } from "lucide-react"
+import type { Metadata } from "next"
+
+export const metadata: Metadata = {
+  title: "Şifre Sıfırla",
+  description: "Şifrenizi sıfırlamak için e-posta adresinizi girin",
+}
 
 export default function ForgotPasswordPage() {
   return (

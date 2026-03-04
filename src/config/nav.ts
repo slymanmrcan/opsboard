@@ -8,9 +8,6 @@ import {
   ShoppingCart,
   FileText,
   Settings,
-  LogIn,
-  UserPlus,
-  KeyRound,
   Type,
   LayoutGrid,
   Layers,
@@ -53,13 +50,5 @@ export const navConfig: NavGroup[] = [
   {
     label: "Sistem",
     items: [{ title: "Ayarlar", icon: Settings, url: "/dashboard/settings" }],
-  },
-  {
-    label: "Kimlik Doğrulama",
-    items: [
-      { title: "Giriş", icon: LogIn, url: "/dashboard/auth/login" },
-      { title: "Kayıt Ol", icon: UserPlus, url: "/dashboard/auth/register" },
-      { title: "Şifre Sıfırla", icon: KeyRound, url: "/forgot-password" },
-    ],
   },
 ]

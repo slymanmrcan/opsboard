@@ -6,12 +6,20 @@ const protectedRoutes = ["/dashboard"]
 // Auth route'ları (login olmuş kullanıcı giremez)
 const authRoutes = ["/login", "/register", "/forgot-password"]
 
+function getRequestAuthToken(request: NextRequest): string | undefined {
+  return (
+    request.cookies.get("token")?.value ||
+    request.cookies.get("access_token")?.value ||
+    request.cookies.get("session")?.value
+  )
+}
+
 export default async function proxy(request: NextRequest) {
   if (process.env.NEXT_PUBLIC_DISABLE_MIDDLEWARE === "true") {
     return NextResponse.next()
   }
 
-  const token = request.cookies.get("token")?.value
+  const token = getRequestAuthToken(request)
   const { pathname } = request.nextUrl
 
   if (pathname.startsWith("/dashboard/auth")) {

@@ -3,7 +3,7 @@
 import { useEffect } from "react"
 import { ErrorContent } from "@/components/error-states/error-content"
 
-export default function Error({
+export default function GlobalError({
   error,
   reset,
 }: {
@@ -11,8 +11,14 @@ export default function Error({
   reset: () => void
 }) {
   useEffect(() => {
-    console.error(error)
+    console.error("Global error:", error)
   }, [error])
 
-  return <ErrorContent message={error.message} onReset={reset} showHomeButton={false} />
+  return (
+    <html lang="tr">
+      <body>
+        <ErrorContent message={error.message} onReset={reset} />
+      </body>
+    </html>
+  )
 }

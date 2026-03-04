@@ -23,8 +23,8 @@ export const useAuthStore = create<AuthState>()(
       isLoading: false,
 
       // Kullanıcı bilgilerini güncelle (Token değişmeden)
-      updateUser: (user) => set({ user }),
-      setToken: (token) => set({ token, isAuthenticated: Boolean(token) }),
+      updateUser: (user) => set((state) => ({ user, isAuthenticated: Boolean(state.token || user) })),
+      setToken: (token) => set((state) => ({ token, isAuthenticated: Boolean(token || state.user) })),
 
       login: async (credentials) => {
         set({ isLoading: true })
@@ -43,7 +43,7 @@ export const useAuthStore = create<AuthState>()(
       },
 
       logout: () => {
-        authService.logout()
+        void authService.logout()
         set({ user: null, token: null, isAuthenticated: false })
       },
     }),

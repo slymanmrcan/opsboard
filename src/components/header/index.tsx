@@ -10,11 +10,15 @@ import { UserMenu } from "./user-menu"
 import { ThemeToggle } from "@/components/theme-toggle"
 import { Separator } from "@/components/ui/separator"
 import { Button } from "../ui/button"
+import { SidebarTrigger } from "@/components/ui/sidebar"
 
 export function Header() {
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="flex h-16 items-center gap-4 px-6">
+        {/* Mobile Sidebar Toggle */}
+        <SidebarTrigger className="lg:hidden" />
+
         {/* Left: Search */}
         <div className="flex-1">
           <SearchBar />

@@ -16,11 +16,14 @@
     "type-check": "tsc --noEmit",
     "test": "playwright test",
     "test:ui": "playwright test --ui",
-    "test:debug": "playwright test --debug"
+    "test:debug": "playwright test --debug",
+    "clean": "rm -rf .next out node_modules/.cache",
+    "analyze": "ANALYZE=true npm run build"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",
     "@tanstack/react-query": "^5.90.21",
+    "@tanstack/react-table": "^8.21.3",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "lucide-react": "^0.564.0",
@@ -39,6 +42,7 @@
   "devDependencies": {
     "@playwright/test": "^1.58.2",
     "@tailwindcss/postcss": "^4",
+    "@tanstack/react-query-devtools": "^5.91.3",
     "@types/node": "^20.19.33",
     "@types/react": "^19",
     "@types/react-dom": "^19",

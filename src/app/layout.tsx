@@ -4,6 +4,7 @@ import "./globals.css"
 import { ThemeProvider, QueryProvider, AuthProvider } from "@/providers"
 import { Toaster } from "@/components/ui/sonner"
 import { siteConfig } from "@/config"
+import { SkipToContent } from "@/components/skip-to-content"
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -60,6 +61,7 @@ export default function RootLayout({
   return (
     <html lang={siteConfig.locale} suppressHydrationWarning>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+        <SkipToContent />
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem disableTransitionOnChange>
           <QueryProvider>
             <AuthProvider>

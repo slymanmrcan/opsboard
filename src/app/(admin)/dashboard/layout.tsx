@@ -1,5 +1,5 @@
 // src/app/dashboard/layout.tsx
-import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar"
+import { SidebarProvider } from "@/components/ui/sidebar"
 import { AppSidebar } from "@/components/sidebar"
 import { Header } from "@/components/header"
 
@@ -16,10 +16,10 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
           <Header />
 
           {/* Content */}
-          <main className="flex-1 p-8 bg-gradient-to-br from-background via-background to-muted/20">
-            <div className="mb-6 flex items-center gap-4">
-              <SidebarTrigger className="lg:hidden" />
-            </div>
+          <main
+            id="main-content"
+            className="flex-1 p-4 md:p-8 bg-gradient-to-br from-background via-background to-muted/20"
+          >
             <div className="max-w-screen-2xl mx-auto">{children}</div>
           </main>
         </div>

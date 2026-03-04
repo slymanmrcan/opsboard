@@ -1,5 +1,6 @@
 import { api } from "./api"
 import type { ApiResponse, User } from "@/types"
+import { clearAuthCookie, setAuthCookie } from "@/lib/auth-cookie"
 
 type LoginCredentials = {
   email: string
@@ -15,7 +16,7 @@ type RegisterData = {
 
 type AuthResponse = {
   user: User
-  token: string
+  token?: string | null
 }
 
 export const authService = {
@@ -34,19 +35,32 @@ export const authService = {
       }
 
       const mockToken = "mock-jwt-token-12345"
-
-      // Cookie'ye token yaz (Middleware için gerekli)
-      document.cookie = `token=${mockToken}; path=/; max-age=86400`
+      setAuthCookie(mockToken)
 
       return { user: mockUser, token: mockToken }
     }
 
-    // API isteği
-    const response = await api.post<ApiResponse<AuthResponse>>("/auth/login", credentials, {
-      noAuth: true,
-    })
+    const response = await api.post<ApiResponse<AuthResponse> | AuthResponse>(
+      "/auth/login",
+      credentials,
+      {
+        noAuth: true,
+      }
+    )
 
-    return response.data
+    const authData = "data" in response ? response.data : response
+    if (!authData?.user) {
+      throw new Error("Login response did not include user information.")
+    }
+
+    if (authData.token) {
+      setAuthCookie(authData.token)
+    }
+
+    return {
+      user: authData.user,
+      token: authData.token ?? null,
+    }
   },
 
   register: async (data: RegisterData) => {
@@ -58,15 +72,15 @@ export const authService = {
   logout: async () => {
     try {
       if (process.env.NEXT_PUBLIC_MOCK_AUTH !== "true") {
-        await api.post("/auth/logout", null)
+        await api.post("/auth/logout", null, {
+          noAuth: true,
+          credentials: "include",
+        })
       }
     } catch (error) {
       console.error("Logout error:", error)
     } finally {
-      // Her durumda client tarafında temizlik yap
-      // Store temizliği store.logout() ile yapılacak (çağıran yer halletmeli)
-      // Cookie sil
-      document.cookie = "token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT"
+      clearAuthCookie()
     }
   },
 
@@ -85,25 +99,6 @@ export const authService = {
     }
 
     const response = await api.get<ApiResponse<User>>("/auth/me")
-    return response.data
-  },
-
-  refreshToken: async () => {
-    if (process.env.NEXT_PUBLIC_MOCK_AUTH === "true") {
-      const mockToken = "mock-jwt-token-12345"
-      document.cookie = `token=${mockToken}; path=/; max-age=86400`
-      return { token: mockToken }
-    }
-
-    const response = await api.post<ApiResponse<{ token: string; user?: User }>>(
-      "/auth/refresh",
-      null,
-      {
-        noAuth: true,
-        credentials: "include",
-      }
-    )
-
     return response.data
   },
 }

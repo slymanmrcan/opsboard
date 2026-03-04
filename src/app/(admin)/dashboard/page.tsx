@@ -1,5 +1,11 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { TrendingUp, TrendingDown, Users, DollarSign, ShoppingCart, Activity } from "lucide-react"
+import type { Metadata } from "next"
+
+export const metadata: Metadata = {
+  title: "Panel",
+  description: "Genel bakış ve istatistikler",
+}
 
 export default function DashboardPage() {
   const stats = [

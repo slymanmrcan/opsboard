@@ -3,15 +3,24 @@
 import { useEffect } from "react"
 import { authService } from "@/services"
 import { useAuthStore } from "@/store/auth-store"
+import { getAuthCookie } from "@/lib/auth-cookie"
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const token = useAuthStore((state) => state.token)
   const updateUser = useAuthStore((state) => state.updateUser)
   const logout = useAuthStore((state) => state.logout)
+  const setToken = useAuthStore((state) => state.setToken)
 
   useEffect(() => {
-    if (!token) {
+    const cookieToken = getAuthCookie()
+    const activeToken = token ?? cookieToken
+
+    if (!activeToken) {
       return
+    }
+
+    if (!token && cookieToken) {
+      setToken(cookieToken)
     }
 
     const validateToken = async () => {
@@ -24,7 +33,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
 
     validateToken()
-  }, [token, updateUser, logout])
+  }, [token, updateUser, logout, setToken])
 
   return <>{children}</>
 }
